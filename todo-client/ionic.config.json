@@ -1,0 +1,7 @@
+{
+  "name": "todo-client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
