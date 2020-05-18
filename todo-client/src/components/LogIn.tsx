@@ -2,6 +2,7 @@ import * as React from 'react'
 import Auth from '../auth/Auth'
 import { Button } from 'semantic-ui-react'
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonButton } from '@ionic/react'
+import PageHeader from './PageHeader'
 
 interface LogInProps {
   auth: Auth
@@ -17,14 +18,7 @@ export class LogIn extends React.PureComponent<LogInProps, LogInState> {
   render() {
     return (
       <IonPage>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton />
-            </IonButtons>
-            <IonTitle>Login</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <PageHeader name="Login" />
         <IonContent>
 
           <IonCard>

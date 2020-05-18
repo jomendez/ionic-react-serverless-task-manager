@@ -34,7 +34,7 @@ class Callback extends React.PureComponent<CallbackProps, any> {
 
     if (this.state.redirect && this.props.auth.isAuthenticated()) {
       return (
-        <Redirect to='/todos' />
+        <Redirect to='/tasks' />
       )
     } else {
       return (

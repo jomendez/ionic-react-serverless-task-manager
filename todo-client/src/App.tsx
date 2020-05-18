@@ -14,19 +14,29 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/typography.css';
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Auth from './auth/Auth';
 import Callback from './components/Callback';
-import { EditTodo } from './components/EditTodo';
+import { UploadImage } from './components/UploadImage';
+import Home from './components/Home';
 import { LogIn } from './components/LogIn';
-import NewTodo from './components/NewTodo';
-import { NotFound } from './components/NotFound';
-import Todos from './components/Todos';
-import Menu from './components1/Menu';
-import Page from './pages/Page';
+import Menu from './components/Menu';
+import NewTask from './components/NewTask';
+import Tasks from './components/TasksList';
 /* Theme variables */
 import './theme/variables.css';
-import Logout from './components/LoginOutMenu';
+/* Core CSS required for Ionic components to work properly */
+/* Basic CSS for apps built with Ionic */
+/* Optional CSS utils that can be commented out */
+/* Theme variables */
+/* Core CSS required for Ionic components to work properly */
+/* Basic CSS for apps built with Ionic */
+/* Optional CSS utils that can be commented out */
+/* Theme variables */
+/* Core CSS required for Ionic components to work properly */
+/* Basic CSS for apps built with Ionic */
+/* Optional CSS utils that can be commented out */
+/* Theme variables */
 /* Core CSS required for Ionic components to work properly */
 /* Basic CSS for apps built with Ionic */
 /* Optional CSS utils that can be commented out */
@@ -52,7 +62,6 @@ export default class App extends Component<AppProps, AppState> {
           <IonSplitPane contentId="main">
             <Menu auth={this.auth} />
             <IonRouterOutlet id="main">
-              <Route path="/page/:name" component={Page} exact />
               <Route
                 path="/callback"
                 render={props => {
@@ -75,31 +84,31 @@ export default class App extends Component<AppProps, AppState> {
                 exact
                 path="/new"
                 render={props => {
-                  return <NewTodo auth={this.auth} />
+                  return <NewTask auth={this.auth} />
                 }
                 }
               />
 
               <Route
                 exact
-                path="/todos"
+                path="/tasks"
                 render={props => {
-                  return <Todos {...props} auth={this.auth} />
+                  return <Tasks {...props} auth={this.auth} />
                 }}
               />
 
               <Route
                 exact
-                path="/todos/:todoId/edit"
+                path="/tasks/:taskId/edit"
                 render={props => {
-                  return <EditTodo {...props} auth={this.auth} />
+                  return <UploadImage {...props} auth={this.auth} />
                 }}
               />
               {/* TODO ?
                <Redirect from='/' to='/welsome' /> 
               */}
-              {/* <Redirect from='/' to='/todos' /> */}
-              <Route component={NotFound} />
+              {/* <Redirect from='/' to='/tasks' /> */}
+              <Route component={Home} />
             </IonRouterOutlet>
 
           </IonSplitPane>

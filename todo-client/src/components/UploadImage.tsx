@@ -1,11 +1,12 @@
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonPage, IonToast } from '@ionic/react'
 import * as React from 'react'
-import { Form, Button } from 'semantic-ui-react'
-import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFile } from '../api/todos-api'
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton } from '@ionic/react'
-import Loading from './Loading'
 import { Redirect } from 'react-router'
+import { Form } from 'semantic-ui-react'
+import { getUploadUrl, uploadFile } from '../api/task-api'
+import Auth from '../auth/Auth'
 import AuthenticationCheck from './Authenticated'
+import Loading from './Loading'
+import PageHeader from './PageHeader'
 
 enum UploadState {
   NoUpload,
@@ -13,29 +14,38 @@ enum UploadState {
   UploadingFile,
 }
 
-interface EditTodoProps {
+interface UploadImageProps {
   match: {
     params: {
-      todoId: string
+      taskId: string
     }
   }
   auth: Auth
 }
 
-interface EditTodoState {
+interface UploadImageState {
   file: any
+  fileUrl: string
   uploadState: UploadState
   doneUpload: boolean
+  isToastOpen: boolean
+  tosatMessage: string
+  toastDuration: number
 }
 
-export class EditTodo extends React.PureComponent<
-  EditTodoProps,
-  EditTodoState
+export class UploadImage extends React.PureComponent<
+  UploadImageProps,
+  UploadImageState
   > {
-  state: EditTodoState = {
+  state: UploadImageState = {
     file: undefined,
+    fileUrl: '',
     uploadState: UploadState.NoUpload,
-    doneUpload: false
+    doneUpload: false,
+
+    isToastOpen: false,
+    tosatMessage: '',
+    toastDuration: 2000
   }
 
   handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +53,8 @@ export class EditTodo extends React.PureComponent<
     if (!files) return
 
     this.setState({
-      file: files[0]
+      file: files[0],
+      fileUrl: URL.createObjectURL(files[0])
     })
   }
 
@@ -52,12 +63,15 @@ export class EditTodo extends React.PureComponent<
 
     try {
       if (!this.state.file) {
-        alert('File should be selected')
+        this.setState({
+          isToastOpen: true,
+          tosatMessage: 'File should be selected'
+        })
         return
       }
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.todoId)
+      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.taskId)
 
       this.setUploadState(UploadState.UploadingFile)
       await uploadFile(uploadUrl, this.state.file)
@@ -66,9 +80,15 @@ export class EditTodo extends React.PureComponent<
         doneUpload: true
       });
 
-      alert('File was uploaded!')
+      this.setState({
+        isToastOpen: true,
+        tosatMessage: 'File was uploaded!'
+      })
     } catch (e) {
-      alert('Could not upload a file: ' + e.message)
+      this.setState({
+        isToastOpen: true,
+        tosatMessage: 'Could not upload a file: ' + e.message
+      })
     } finally {
       this.setUploadState(UploadState.NoUpload)
     }
@@ -83,23 +103,20 @@ export class EditTodo extends React.PureComponent<
   render() {
     if (this.state.doneUpload) {
       return (
-        <Redirect to='/todos' />
+        <Redirect to='/tasks' />
       )
     }
     return (
       <>
         <AuthenticationCheck auth={this.props.auth} />
         <IonPage>
-          <IonHeader>
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonMenuButton />
-              </IonButtons>
-              <IonTitle>Upload Image</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-
+          <PageHeader name="Upload Image" />
           <IonContent>
+            <IonToast
+              isOpen={this.state.isToastOpen}
+              message={this.state.tosatMessage}
+              duration={this.state.toastDuration}
+            />
             <IonCard>
               <IonCardHeader>
                 <IonCardTitle>Upload new image</IonCardTitle>
@@ -110,11 +127,13 @@ export class EditTodo extends React.PureComponent<
                   <Form.Field>
                     <label>File</label>
                     <input
+                      id="file"
                       type="file"
                       accept="image/*"
                       placeholder="Image to upload"
                       onChange={this.handleFileChange}
                     />
+                    <img style={{ marginTop: '16px' }} src={this.state.fileUrl} />
                   </Form.Field>
 
                   {this.renderButton()}
@@ -136,7 +155,7 @@ export class EditTodo extends React.PureComponent<
 
   renderButton() {
     return (
-      <IonButton expand="full"
+      <IonButton expand="full" style={{ marginTop: '32px' }}
         type="submit"
       >
         Upload

@@ -7,15 +7,15 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
+  IonNote
 } from '@ionic/react';
-
+import { bookmarkOutline, documentOutline, documentSharp, heartOutline, heartSharp, homeOutline, homeSharp, listOutline, listSharp } from 'ionicons/icons';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
-import './Menu.css';
 import Auth from '../auth/Auth';
-import LoginOutMenu from '../components/LoginOutMenu';
+import LoginOutMenu from './LoginOutMenu';
+import './Menu.css';
+
 
 interface AppPage {
   url: string;
@@ -23,7 +23,7 @@ interface AppPage {
   mdIcon: string;
   title: string;
 }
-interface IMenuProps{
+interface IMenuProps {
   auth: Auth
 }
 
@@ -31,20 +31,20 @@ const appPages: AppPage[] = [
   {
     title: 'Home',
     url: '/',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    iosIcon: homeOutline,
+    mdIcon: homeSharp
   },
   {
     title: 'New',
     url: '/new',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    iosIcon: documentOutline,
+    mdIcon: documentSharp
   },
   {
     title: 'List',
-    url: '/todos',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
+    url: '/tasks',
+    iosIcon: listOutline,
+    mdIcon: listSharp
   }
 ];
 
@@ -57,8 +57,8 @@ const Menu: React.FC<IMenuProps> = (props) => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonListHeader>Task Manager</IonListHeader>
+          <IonNote>Howdy Guess</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
@@ -69,7 +69,7 @@ const Menu: React.FC<IMenuProps> = (props) => {
               </IonMenuToggle>
             );
           })}
-          <LoginOutMenu auth={props.auth}/>
+          <LoginOutMenu auth={props.auth} />
         </IonList>
 
         <IonList id="labels-list">
