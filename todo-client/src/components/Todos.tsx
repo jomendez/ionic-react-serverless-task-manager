@@ -1,23 +1,14 @@
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonContent, IonDatetime, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonLabel, IonMenuButton, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar, withIonLifeCycle } from '@ionic/react'
+import dateFormat from 'dateformat'
 import update from 'immutability-helper'
+import { add, chevronDownCircleOutline } from 'ionicons/icons'
 import * as React from 'react'
-import { Redirect } from 'react-router'
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-
-  Image,
-  Loader
-} from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Image } from 'semantic-ui-react'
 import { deleteTodo, getTodos, patchTodo } from '../api/todos-api'
 import Auth from '../auth/Auth'
 import { Todo } from '../types/Todo'
-import NewTodo from './NewTodo'
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonLabel, IonCheckbox, IonButton, IonLoading, IonButtons, IonMenuButton } from '@ionic/react'
-import { Link } from 'react-router-dom'
+import AuthenticationCheck from './Authenticated'
 import Loading from './Loading'
 
 
@@ -31,17 +22,11 @@ interface TodosState {
   loadingTodos: boolean
 }
 
-export class Todos extends React.PureComponent<TodosProps, TodosState> {
+class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     todos: [],
     newTodoName: '',
-    loadingTodos: true
-  }
-
-
-  onEditButtonClick = (todoId: string) => {
-    // TODO: navigate to edit 
-    //this.props.history.push(`/todos/${todoId}/edit`)
+    loadingTodos: false
   }
 
   onTodoDelete = async (todoId: string) => {
@@ -60,6 +45,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       const todo = this.state.todos[pos]
       await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
         name: todo.name,
+        text: todo.text,
         dueDate: todo.dueDate,
         done: !todo.done
       })
@@ -73,13 +59,16 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     }
   }
 
-  async componentDidMount() {
+  onImageError(ev: any) {
+    ev.target.src = 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
+  }
 
+  async loadContent(event: any = null) {
+    this.setState({
+      todos: [],
+      loadingTodos: true
+    })
     if (!this.props.auth.isAuthenticated()) {
-      this.setState({
-        todos: [],
-        loadingTodos: false
-      })
       return
     }
     try {
@@ -88,24 +77,54 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         todos,
         loadingTodos: false
       })
+      event?.detail?.complete();
     } catch (e) {
+      event?.detail?.complete();
       alert(`Failed to fetch todos: ${e.message}`)
     }
   }
 
+  async onSaveDuedate(pos: number) {
+    try {
+      const todo = { ... this.state.todos[pos] };//clone object
+
+      todo.dueDate = dateFormat(todo.dueDate, 'yyyy-mm-dd') as string
+
+      await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
+        name: todo.name,
+        text: todo.text,
+        dueDate: todo.dueDate,
+        done: todo.done
+      });
+    } catch {
+      alert('Todo deletion failed')
+    }
+  }
+
+  setSelectedDate(ev: string, pos: number) {
+
+    const todo = { ... this.state.todos[pos] };//clone object
+    const date = new Date(ev);
+    todo.dueDate = dateFormat(date, 'yyyy-mm-dd') as string
+
+    this.setState({
+      todos: update(this.state.todos, {
+        [pos]: { dueDate: { $set: todo.dueDate } }
+      })
+    });
+  }
+
+  async ionViewDidEnter() {
+    this.loadContent();
+
+  }
+
   render() {
 
-    // if (!this.props.auth.isAuthenticated()) {
-    //   return <Redirect to='/login' />
-    // } else {
-    const isAuthenticated = this.props.auth.isAuthenticated();
-    if (!isAuthenticated) {
-      return (
-        <Redirect to='/login' />
-      )
-    } else {
 
-      return (
+    return (
+      <>
+        <AuthenticationCheck auth={this.props.auth} />
         <IonPage>
           <IonHeader>
             <IonToolbar>
@@ -116,13 +135,36 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             </IonToolbar>
           </IonHeader>
           <IonContent>
-            {this.renderTodos()}
+            {this.renderRefresher()}
+            <IonFab vertical="bottom" horizontal="end" slot="fixed">
+              <Link to="/new">
+                <IonFabButton>
+                  <IonIcon icon={add} />
+                </IonFabButton>
+              </Link>
+            </IonFab>
           </IonContent>
         </IonPage>
-      )
-    }
+      </>
+    )
+
   }
 
+  renderRefresher() {
+    return (
+      <>
+        <IonRefresher slot="fixed" onIonRefresh={(e) => this.loadContent(e)}>
+          <IonRefresherContent
+            pullingIcon={chevronDownCircleOutline}
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+          </IonRefresherContent>
+        </IonRefresher>
+        {this.renderTodos()}
+      </>
+    )
+  }
 
   renderTodos() {
     if (this.state.loadingTodos) {
@@ -130,11 +172,6 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     }
 
     return this.renderTodosList()
-  }
-
-  onImageError(ev: any) {
-    ev.target.onerror = null;
-    ev.target.src = 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
   }
 
   renderTodosList() {
@@ -150,7 +187,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
               <IonCardContent>
 
                 {todo.attachmentUrl && (
-                  <Image wrapped src={todo.attachmentUrl} onError={this.onImageError} />
+                  <Image wrapped src={todo.attachmentUrl} />
                 )}
                 <IonItem>
                   <IonLabel>Done</IonLabel>
@@ -163,10 +200,27 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel>{todo.name}</IonLabel>
+                  <IonLabel>{todo.text}</IonLabel>
                 </IonItem>
                 <IonItem>
-                  <IonLabel>{todo.dueDate}</IonLabel>
+                  <IonLabel>Due date</IonLabel>
+                  <IonDatetime pickerOptions={{
+                    buttons: [
+                      {
+                        text: 'Save',
+                        handler: () => {
+                          this.onSaveDuedate(pos);
+                        }
+                      }, {
+                        text: 'Cancel',
+                        handler: () => {
+                          console.log('Clicked cancel, dismiss.');
+                          return true;
+                        }
+                      }
+                    ]
+                  }}
+                    displayFormat="MM-DD-YYYY" placeholder="Select Date" value={todo.dueDate} onIonChange={e => this.setSelectedDate(e.detail.value!, pos)}></IonDatetime>
                 </IonItem>
 
                 <Link to={`/todos/${todo.todoId}/edit`}>
@@ -183,3 +237,5 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   }
 
 }
+
+export default withIonLifeCycle(Todos)

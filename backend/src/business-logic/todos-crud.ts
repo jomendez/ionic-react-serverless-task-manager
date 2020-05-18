@@ -72,11 +72,13 @@ export async function updateTodo(userId: string, todoId: string, updatedTodo: Up
     { createdAt } = result,
     {
       name,
+      text,
       dueDate,
       done
     } = updatedTodo,
     todoItem: TodoUpdate = {
       name,
+      text,
       dueDate,
       done
     }

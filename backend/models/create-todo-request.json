@@ -5,6 +5,7 @@
   "properties": {
     "createdAt": { "type": "string" },
     "name": { "type": "string" },
+    "text": { "type": "string" },
     "dueDate": { "type": "string" },
     "done": { "type": "boolean" },
     "attachmentUrl": { "type": "string" }

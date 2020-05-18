@@ -20,11 +20,7 @@ const Page: React.FC = () => {
       </IonHeader>
 
       <IonContent>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">{name}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+
         <ExploreContainer name={name} />
       </IonContent>
     </IonPage>

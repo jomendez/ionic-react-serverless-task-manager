@@ -14,12 +14,17 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
+import Auth from '../auth/Auth';
+import LoginOutMenu from '../components/LoginOutMenu';
 
 interface AppPage {
   url: string;
   iosIcon: string;
   mdIcon: string;
   title: string;
+}
+interface IMenuProps{
+  auth: Auth
 }
 
 const appPages: AppPage[] = [
@@ -40,30 +45,12 @@ const appPages: AppPage[] = [
     url: '/todos',
     iosIcon: heartOutline,
     mdIcon: heartSharp
-  },
-  {
-    title: 'Login',
-    url: '/login',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp
-  },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
   }
 ];
 
 const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-const Menu: React.FC = () => {
+const Menu: React.FC<IMenuProps> = (props) => {
   const location = useLocation();
 
   return (
@@ -82,6 +69,7 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
+          <LoginOutMenu auth={props.auth}/>
         </IonList>
 
         <IonList id="labels-list">

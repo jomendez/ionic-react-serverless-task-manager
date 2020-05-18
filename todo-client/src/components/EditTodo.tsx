@@ -5,6 +5,7 @@ import { getUploadUrl, uploadFile } from '../api/todos-api'
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton } from '@ionic/react'
 import Loading from './Loading'
 import { Redirect } from 'react-router'
+import AuthenticationCheck from './Authenticated'
 
 enum UploadState {
   NoUpload,
@@ -82,45 +83,48 @@ export class EditTodo extends React.PureComponent<
   render() {
     if (this.state.doneUpload) {
       return (
-        <Redirect to='/todo' />
+        <Redirect to='/todos' />
       )
     }
     return (
-      <IonPage>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonMenuButton />
-            </IonButtons>
-            <IonTitle>Login</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+      <>
+        <AuthenticationCheck auth={this.props.auth} />
+        <IonPage>
+          <IonHeader>
+            <IonToolbar>
+              <IonButtons slot="start">
+                <IonMenuButton />
+              </IonButtons>
+              <IonTitle>Upload Image</IonTitle>
+            </IonToolbar>
+          </IonHeader>
 
-        <IonContent>
-          <IonCard>
-            <IonCardHeader>
-              <IonCardTitle>Upload new image</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              {this.renderLoading()}
-              <Form onSubmit={this.handleSubmit}>
-                <Form.Field>
-                  <label>File</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    placeholder="Image to upload"
-                    onChange={this.handleFileChange}
-                  />
-                </Form.Field>
+          <IonContent>
+            <IonCard>
+              <IonCardHeader>
+                <IonCardTitle>Upload new image</IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+                {this.renderLoading()}
+                <Form onSubmit={this.handleSubmit}>
+                  <Form.Field>
+                    <label>File</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      placeholder="Image to upload"
+                      onChange={this.handleFileChange}
+                    />
+                  </Form.Field>
 
-                {this.renderButton()}
-              </Form>
+                  {this.renderButton()}
+                </Form>
 
-            </IonCardContent>
-          </IonCard>
-        </IonContent>
-      </IonPage>
+              </IonCardContent>
+            </IonCard>
+          </IonContent>
+        </IonPage>
+      </>
     )
   }
 

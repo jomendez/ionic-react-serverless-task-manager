@@ -121,7 +121,7 @@ export class Access {
     const uploadUrl = this.s3.getSignedUrl('putObject', {
       Bucket: this.bucketName,
       Key: todoId,
-      Expires: this.urlExpiration
+      Expires: Number(this.urlExpiration)
     })
 
     todosAccessLogger.info('getting todo file upload signed url uploadUrl', { uploadUrl })

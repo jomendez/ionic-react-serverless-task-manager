@@ -4,6 +4,7 @@
   "type": "object",
   "properties": {
     "name": { "type": "string" },
+    "text": { "type": "string" },
     "dueDate": { "type": "string" },
     "done": { "type": "boolean" }
   },
