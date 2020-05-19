@@ -111,7 +111,7 @@ export default class NewTask extends React.Component<INewTaskProps> {
                 <IonButton onClick={() => { this.onTaskCreate() }} color="primary">New Task</IonButton>
                 <Link to="/tasks" className="btn btn-primary">
                   <IonButton color="secondary">
-                    List of TODOs
+                    List of Tasks
 
                   </IonButton>
                 </Link>

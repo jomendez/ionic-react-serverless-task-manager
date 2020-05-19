@@ -1,28 +1,28 @@
 import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
-import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
+import { CreateTaskRequest } from '../../requests/CreateTaskRequest'
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
-import { createTodo } from '../../business-logic/todos-crud'
+import { createTask } from '../../business-logic/tasks-crud'
 
-const createTodoLogger = createLogger('createTodoLambda')
+const createTaskLogger = createLogger('createTaskLambda')
 const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  createTodoLogger.info('Processing event', { event })
+  createTaskLogger.info('Processing event', { event })
 
-  const todoNew: CreateTodoRequest = JSON.parse(event.body)
+  const taskNew: CreateTaskRequest = JSON.parse(event.body)
 
-  let todoItem, userId
+  let taskItem, userId
 
   try {
     userId = getUserId(event)
-    todoItem = await createTodo(userId, todoNew)
+    taskItem = await createTask(userId, taskNew)
   } catch (error) {
-    createTodoLogger.error('Error while trying to insert todo', {
+    createTaskLogger.error('Error while trying to insert task', {
       error,
       userId,
-      todoNew
+      taskNew
     })
 
     return {
@@ -35,6 +35,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   return {
     statusCode: 201,
     headers: accessControlAllowOrigin,
-    body: JSON.stringify({ item: todoItem })
+    body: JSON.stringify({ item: taskItem })
   }
 }

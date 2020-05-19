@@ -104,7 +104,7 @@ export default class App extends Component<AppProps, AppState> {
                   return <UploadImage {...props} auth={this.auth} />
                 }}
               />
-              {/* TODO ?
+              {/* Task ?
                <Redirect from='/' to='/welsome' /> 
               */}
               {/* <Redirect from='/' to='/tasks' /> */}

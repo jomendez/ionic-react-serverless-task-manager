@@ -1,5 +1,5 @@
 export interface Task {
-  todoId: string
+  taskId: string
   createdAt: string
   name: string
   text: string

@@ -41,7 +41,7 @@ class Tasks extends React.PureComponent<TasksProps, TasksState> {
     try {
       await deleteTask(this.props.auth.getIdToken(), taskId)
       this.setState({
-        tasks: this.state.tasks.filter(task => task.todoId !== taskId)
+        tasks: this.state.tasks.filter(task => task.taskId !== taskId)
       })
     } catch {
       this.setState({
@@ -54,7 +54,7 @@ class Tasks extends React.PureComponent<TasksProps, TasksState> {
   onTaskCheck = async (pos: number) => {
     try {
       const task = this.state.tasks[pos]
-      await patchTask(this.props.auth.getIdToken(), task.todoId, {
+      await patchTask(this.props.auth.getIdToken(), task.taskId, {
         name: task.name,
         text: task.text,
         dueDate: task.dueDate,
@@ -107,7 +107,7 @@ class Tasks extends React.PureComponent<TasksProps, TasksState> {
 
       task.dueDate = dateFormat(task.dueDate, 'yyyy-mm-dd') as string
 
-      await patchTask(this.props.auth.getIdToken(), task.todoId, {
+      await patchTask(this.props.auth.getIdToken(), task.taskId, {
         name: task.name,
         text: task.text,
         dueDate: task.dueDate,
@@ -209,7 +209,7 @@ class Tasks extends React.PureComponent<TasksProps, TasksState> {
       <div>
         {this.state.tasks.map((task, pos) => {
           return (
-            <IonCard key={task.todoId}>
+            <IonCard key={task.taskId}>
               <IonCardHeader>
                 <IonCardTitle>{task.name}</IonCardTitle>
               </IonCardHeader>
@@ -265,10 +265,10 @@ class Tasks extends React.PureComponent<TasksProps, TasksState> {
                     displayFormat="MM-DD-YYYY" placeholder="Select Date" value={task.dueDate} ></IonDatetime>
                 </IonItem>
 
-                <Link to={`/tasks/${task.todoId}/edit`}>
+                <Link to={`/tasks/${task.taskId}/edit`}>
                   <IonButton color="primary">Upload Image</IonButton>
                 </Link>
-                <IonButton onClick={() => { this.onTaskDelete(task.todoId) }} color="danger">Delete</IonButton>
+                <IonButton onClick={() => { this.onTaskDelete(task.taskId) }} color="danger">Delete</IonButton>
 
               </IonCardContent>
             </IonCard>

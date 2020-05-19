@@ -6,21 +6,21 @@ const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
 
-import { updateTodo } from '../../business-logic/todos-crud'
+import { updateTask } from '../../business-logic/tasks-crud'
 
-const updateTodoLogger = createLogger('updateTodo')
+const updateTaskLogger = createLogger('updateTask')
 
-import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
+import { UpdateTaskRequest } from '../../requests/UpdateTaskRequest'
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  updateTodoLogger.info('Processing event', { event })
+  updateTaskLogger.info('Processing event', { event })
 
-  const todoId = event.pathParameters.todoId
+  const taskId = event.pathParameters.taskId
 
-  if (!todoId) {
-    const message = 'Missing todoId'
+  if (!taskId) {
+    const message = 'Missing taskId'
 
-    updateTodoLogger.error(message)
+    updateTaskLogger.error(message)
 
     return {
       statusCode: 400,
@@ -29,15 +29,15 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     }
   }
 
-  const updateItem: UpdateTodoRequest = JSON.parse(event.body)
+  const updateItem: UpdateTaskRequest = JSON.parse(event.body)
   let userId
 
   try {
     userId = getUserId(event)
 
-    await updateTodo(userId, todoId, updateItem)
+    await updateTask(userId, taskId, updateItem)
   } catch (error) {
-    updateTodoLogger.error('Error while trying to update item', {
+    updateTaskLogger.error('Error while trying to update item', {
       error,
       userId,
       updateItem

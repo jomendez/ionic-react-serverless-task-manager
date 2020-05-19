@@ -3,76 +3,76 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 
 const AWSXRay = require('aws-xray-sdk')
 
-import { TodoItem } from '../models/TodoItem'
-import { TodoUpdate } from '../models/TodoUpdate'
+import { TaskItem } from '../models/TaskItem'
+import { TaskUpdate } from '../models/TaskUpdate'
 
 import { createLogger } from '../utils/logger'
 
 const
   XAWS = AWSXRay.captureAWS(AWS),
-  todosAccessLogger = createLogger('todosAccess')
+  tasksAccessLogger = createLogger('tasksAccess')
 
 export class Access {
   constructor(
     private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
-    private readonly todosIdIndex = process.env.TODOS_ID_INDEX,
-    private readonly todosTable = process.env.TODOS_TABLE,
+    private readonly tasksIdIndex = process.env.TASKS_ID_INDEX,
+    private readonly tasksTable = process.env.TASKS_TABLE,
     private readonly s3 = new XAWS.S3({ signatureVersion: 'v4' }),
     private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION,
-    private readonly bucketName = process.env.TODOS_FILES_S3_BUCKET
+    private readonly bucketName = process.env.TASKS_FILES_S3_BUCKET
   ) {
-    todosAccessLogger.info('constructing access class', {
-      todosTable,
-      todosIdIndex
+    tasksAccessLogger.info('constructing access class', {
+      tasksTable,
+      tasksIdIndex
     })
   }
 
-  async createTodo(todoItem: TodoItem): Promise<void> {
-    todosAccessLogger.info('creating new todo', { todoItem })
+  async createTask(taskItem: TaskItem): Promise<void> {
+    tasksAccessLogger.info('creating new task', { taskItem })
 
     await this.docClient.put({
-      TableName: this.todosTable,
-      Item: todoItem
+      TableName: this.tasksTable,
+      Item: taskItem
     }).promise()
   }
 
-  async updateTodo(userId: string, createdAt: string, todoItem: TodoUpdate): Promise<void> {
-    todosAccessLogger.info('updating todo', {
+  async updateTask(userId: string, createdAt: string, taskItem: TaskUpdate): Promise<void> {
+    tasksAccessLogger.info('updating task', {
       userId,
       createdAt,
-      todoItem
+      taskItem
     })
 
     const {
       name,
       dueDate,
       done
-    } = todoItem
+    } = taskItem
 
     await this.docClient.update({
-      TableName: this.todosTable,
+      TableName: this.tasksTable,
       Key: {
         userId,
         createdAt
       },
-      UpdateExpression: 'set #todoName=:todoName, dueDate=:dueDate, done=:done',
-      ExpressionAttributeNames: { '#todoName': 'name' },
+      UpdateExpression: 'set #taskName=:taskName, dueDate=:dueDate, done=:done',
+      ExpressionAttributeNames: { '#taskName': 'name' },
       ExpressionAttributeValues: {
-        ':todoName': name,
+        ':taskName': name,
         ':dueDate': dueDate,
         ':done': done
       }
     }).promise()
   }
 
-  async getAllTodos(userId: string): Promise<TodoItem[]> {
-    todosAccessLogger.info('getting all todos', { userId })
+  async getAllTasks(userId: string): Promise<TaskItem[]> {
+    tasksAccessLogger.info('getting all tasks', { userId })
 
-    let todoItems = []
+    let taskItems = []
 
     const result = await this.docClient.query({
-      TableName: this.todosTable,
-      IndexName: this.todosIdIndex,
+      TableName: this.tasksTable,
+      IndexName: this.tasksIdIndex,
       KeyConditionExpression: 'userId=:userId',
       ExpressionAttributeValues: { ':userId': userId },
       ScanIndexForward: false
@@ -81,26 +81,26 @@ export class Access {
     const { Items } = result
 
     if (Items && Items.length) {
-      todoItems = Items
+      taskItems = Items
     }
 
-    return todoItems
+    return taskItems
   }
 
-  async getTodo(userId: string, todoId: string): Promise<TodoItem> {
-    todosAccessLogger.info('getting a todo', {
+  async getTask(userId: string, taskId: string): Promise<TaskItem> {
+    tasksAccessLogger.info('getting a task', {
       userId,
-      todoId
+      taskId
     })
 
-    let todoItem
+    let taskItem
 
     const result = await this.docClient.query({
-      TableName: this.todosTable,
-      IndexName: this.todosIdIndex,
-      KeyConditionExpression: 'todoId=:todoId AND userId=:userId',
+      TableName: this.tasksTable,
+      IndexName: this.tasksIdIndex,
+      KeyConditionExpression: 'taskId=:taskId AND userId=:userId',
       ExpressionAttributeValues: {
-        ':todoId': todoId,
+        ':taskId': taskId,
         ':userId': userId
       },
       ScanIndexForward: false
@@ -109,35 +109,35 @@ export class Access {
     const { Items } = result
 
     if (Items && Items.length) {
-      [ todoItem ] = Items
+      [ taskItem ] = Items
     }
 
-    return todoItem
+    return taskItem
   }
 
-  getTodoFileUploadSignedUrl(todoId: string): string {
-    todosAccessLogger.info('getting todo file upload signed url', { todoId })
+  getTaskFileUploadSignedUrl(taskId: string): string {
+    tasksAccessLogger.info('getting task file upload signed url', { taskId })
 
     const uploadUrl = this.s3.getSignedUrl('putObject', {
       Bucket: this.bucketName,
-      Key: todoId,
+      Key: taskId,
       Expires: Number(this.urlExpiration)
     })
 
-    todosAccessLogger.info('getting todo file upload signed url uploadUrl', { uploadUrl })
+    tasksAccessLogger.info('getting task file upload signed url uploadUrl', { uploadUrl })
 
     return uploadUrl
   }
 
 
-  async deleteTodo(userId: string, createdAt: string): Promise<void> {
-    todosAccessLogger.info('deleting todo', {
+  async deleteTask(userId: string, createdAt: string): Promise<void> {
+    tasksAccessLogger.info('deleting task', {
       userId,
       createdAt
     })
 
     await this.docClient.delete({
-      TableName: this.todosTable,
+      TableName: this.tasksTable,
       Key: {
         userId,
         createdAt

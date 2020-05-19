@@ -1,5 +1,5 @@
 {
-  "name": "todo-client",
+  "name": "task-client",
   "integrations": {
     "capacitor": {}
   },

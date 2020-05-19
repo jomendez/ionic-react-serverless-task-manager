@@ -2,21 +2,21 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
-import { deleteTodo } from '../../business-logic/todos-crud'
+import { deleteTask } from '../../business-logic/tasks-crud'
 
 const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
 
-const deleteTodoLogger = createLogger('deleteTodo')
+const deleteTaskLogger = createLogger('deleteTask')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  deleteTodoLogger.info('Processing event', { event })
+  deleteTaskLogger.info('Processing event', { event })
 
-  const todoId = event.pathParameters.todoId
+  const taskId = event.pathParameters.taskId
 
-  if (!todoId) {
-    const message = 'Missing TODO Id'
+  if (!taskId) {
+    const message = 'Missing TASK Id'
 
-    deleteTodoLogger.error(message)
+    deleteTaskLogger.error(message)
 
     return {
       statusCode: 400,
@@ -30,12 +30,12 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   try {
     userId = getUserId(event)
 
-    await deleteTodo(userId, todoId)
+    await deleteTask(userId, taskId)
   } catch (error) {
-    deleteTodoLogger.info('Error while trying to delete an item', {
+    deleteTaskLogger.info('Error while trying to delete an item', {
       error,
       userId,
-      todoId
+      taskId
      })
 
     return {

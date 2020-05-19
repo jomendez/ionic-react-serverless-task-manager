@@ -1,7 +1,7 @@
 import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import { createLogger } from '../../utils/logger'
-import { generateTodoUploadUrl } from '../../business-logic/todos-crud'
+import { generateTaskUploadUrl } from '../../business-logic/tasks-crud'
 
 const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
 
@@ -10,7 +10,7 @@ const generateUploadUrlLogger = createLogger('generateUploadUrl')
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   generateUploadUrlLogger.info('Processing event', { event })
 
-  const itemId = event.pathParameters.todoId
+  const itemId = event.pathParameters.taskId
 
   if (!itemId) {
     const message = 'Missing item Id'
@@ -27,7 +27,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   let uploadUrl: string;
 
   try {
-    uploadUrl = generateTodoUploadUrl(itemId)
+    uploadUrl = generateTaskUploadUrl(itemId)
   } catch (error) {
     generateUploadUrlLogger.error('Error while trying to sign url s3', { error })
 

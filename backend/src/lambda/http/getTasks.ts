@@ -6,21 +6,21 @@ const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
 
-import { getAllTodos } from '../../business-logic/todos-crud'
+import { getAllTasks } from '../../business-logic/tasks-crud'
 
-const getTodosLogger = createLogger('getTodo')
+const getTasksLogger = createLogger('getTask')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  getTodosLogger.info('Processing event', { event })
+  getTasksLogger.info('Processing event', { event })
 
-  let userId, todos
+  let userId, tasks
 
   try {
     const userId = getUserId(event)
 
-    todos = await getAllTodos(userId)
+    tasks = await getAllTasks(userId)
   } catch (error) {
-    getTodosLogger.error('Error while trying to get todos', {
+    getTasksLogger.error('Error while trying to get tasks', {
       error,
       userId
     })
@@ -35,6 +35,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   return {
     statusCode: 200,
     headers: accessControlAllowOrigin,
-    body: JSON.stringify({ items: todos })
+    body: JSON.stringify({ items: tasks })
   }
 }
