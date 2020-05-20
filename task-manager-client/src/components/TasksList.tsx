@@ -217,7 +217,7 @@ class Tasks extends React.PureComponent<TasksProps, TasksState> {
               <IonCardContent>
 
                 {task.attachmentUrl && (
-                  <Image wrapped src={task.attachmentUrl} />
+                  <Image wrapped src={task.attachmentUrl + '?rand=' + Math.floor((Math.random() * 10000) + 1)} />
                 )}
                 <IonItem>
                   <IonLabel>Done</IonLabel>

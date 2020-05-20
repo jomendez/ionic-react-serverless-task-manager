@@ -139,7 +139,9 @@ export default function ProfileComponent(props: IProfileProps) {
             <IonCardContent>
 
               {profile?.attachmentUrl && (
-                <Image wrapped src={profile.attachmentUrl} />
+                <>
+                  <img src={profile.attachmentUrl + '?rand=' + Math.floor((Math.random() * 10000) + 1)} />
+                </>
               )}
 
               <IonItem>
