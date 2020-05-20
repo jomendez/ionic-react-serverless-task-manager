@@ -7,6 +7,9 @@ plugins:
   - serverless-reqvalidator-plugin
   - serverless-aws-documentation
 
+package:
+  individually: true
+
 provider:
   name: aws
   runtime: nodejs10.x
@@ -24,6 +27,11 @@ provider:
     TASKS_FILES_S3_BUCKET: jomendez-tasks-attachments-${self:provider.stage}
     TASKS_ID_INDEX: TasksIdIndex
 
+    # Profile table
+    PROFILES_TABLE: jomendez-profiles-${self:provider.stage}
+    PROFILES_FILES_S3_BUCKET: jomendez-profiles-attachments-${self:provider.stage}
+    PROFILES_ID_INDEX: ProfilesIdIndex
+
 custom:
   documentation:
     api:
@@ -38,12 +46,18 @@ custom:
       - name: UpdateTask
         contentType: "application/json"
         schema: ${file(models/update-task-request.json)}
+      - name: CreateProfile
+        contentType: "application/json"
+        schema: ${file(models/create-profile-request.json)}
+      - name: UpdateProfile
+        contentType: "application/json"
+        schema: ${file(models/update-profile-request.json)}        
 
 functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
   GetTasks:
-    handler: src/lambda/http/getTasks.handler
+    handler: src/lambda/http-task/getTasks.handler
     events:
       - http:
           method: get
@@ -61,7 +75,7 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASKS_TABLE}/index/${self:provider.environment.TASKS_ID_INDEX}
   CreateTask:
-    handler: src/lambda/http/createTask.handler
+    handler: src/lambda/http-task/createTask.handler
     events:
       - http:
           method: post
@@ -80,7 +94,7 @@ functions:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASKS_TABLE}
   UpdateTask:
-    handler: src/lambda/http/updateTask.handler
+    handler: src/lambda/http-task/updateTask.handler
     events:
       - http:
           method: patch
@@ -103,7 +117,7 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASKS_TABLE}/index/${self:provider.environment.TASKS_ID_INDEX}
   DeleteTask:
-    handler: src/lambda/http/deleteTask.handler
+    handler: src/lambda/http-task/deleteTask.handler
     events:
       - http:
           method: delete
@@ -120,7 +134,7 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TASKS_TABLE}/index/${self:provider.environment.TASKS_ID_INDEX}
   GenerateUploadUrl:
-    handler: src/lambda/http/generateUploadUrl.handler
+    handler: src/lambda/http-task/generateUploadUrl.handler
     events:
       - http:
           method: post
@@ -133,6 +147,103 @@ functions:
           - s3:PutObject
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.TASKS_FILES_S3_BUCKET}/*
+  
+  # Profile functions
+  GetProfiles:
+    handler: src/lambda/http-profile/getProfile.handler
+    events:
+      - http:
+          method: get
+          path: profiles
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PROFILES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PROFILES_TABLE}/index/${self:provider.environment.PROFILES_ID_INDEX}
+  CreateProfile:
+    handler: src/lambda/http-profile/createProfile.handler
+    events:
+      - http:
+          method: post
+          path: profiles
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new PROFILE entry
+            description: Create a new PROFILE entry
+            requestModels:
+              'application/json': CreateProfile
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PROFILES_TABLE}
+  UpdateProfile:
+    handler: src/lambda/http-profile/updateProfile.handler
+    events:
+      - http:
+          method: patch
+          path: profiles/{profileId}
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Update PROFILE
+            description: Update PROFILE
+            requestModels:
+              'application/json': UpdateProfile
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PROFILES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PROFILES_TABLE}/index/${self:provider.environment.PROFILES_ID_INDEX}
+  DeleteProfile:
+    handler: src/lambda/http-profile/deleteProfile.handler
+    events:
+      - http:
+          method: delete
+          path: profiles/{profileId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PROFILES_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PROFILES_TABLE}/index/${self:provider.environment.PROFILES_ID_INDEX}
+  GenerateUploadUrlP:
+    handler: src/lambda/http-profile/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          path: profiles/{profileId}/attachment
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.PROFILES_FILES_S3_BUCKET}/*
+
+
+
+
 
 resources:
   Resources:
@@ -210,3 +321,62 @@ resources:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.TASKS_TABLE}
+
+    #profile 
+    profileattachmentsbucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        BucketName: ${self:provider.environment.PROFILES_FILES_S3_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+    BucketPolicyProfile:
+      Type: "AWS::S3::BucketPolicy"
+      Properties:
+        PolicyDocument:
+          Id: MyPolicyProfile
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.PROFILES_FILES_S3_BUCKET}/*'
+        Bucket: !Ref profileattachmentsbucket
+    ProfilesDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: profileId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.PROFILES_ID_INDEX}
+            KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: profileId
+              KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.PROFILES_TABLE}

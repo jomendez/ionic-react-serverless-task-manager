@@ -1,22 +1,23 @@
+import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 import 'source-map-support/register'
-import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
-import { getUserId } from '../utils'
+import { updateTask } from '../../business-logic/tasks-crud'
+import { UpdateTaskRequest } from '../../requests/UpdateTaskRequest'
 import { createLogger } from '../../utils/logger'
-import { deleteTask } from '../../business-logic/tasks-crud'
+import { getUserId } from '../utils'
 
 const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
+const updateTaskLogger = createLogger('updateTask')
 
-const deleteTaskLogger = createLogger('deleteTask')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  deleteTaskLogger.info('Processing event', { event })
+  updateTaskLogger.info('Processing event', { event })
 
   const taskId = event.pathParameters.taskId
 
   if (!taskId) {
-    const message = 'Missing TASK Id'
+    const message = 'Missing taskId'
 
-    deleteTaskLogger.error(message)
+    updateTaskLogger.error(message)
 
     return {
       statusCode: 400,
@@ -25,21 +26,22 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     }
   }
 
+  const updateItem: UpdateTaskRequest = JSON.parse(event.body)
   let userId
 
   try {
     userId = getUserId(event)
 
-    await deleteTask(userId, taskId)
+    await updateTask(userId, taskId, updateItem)
   } catch (error) {
-    deleteTaskLogger.info('Error while trying to delete an item', {
+    updateTaskLogger.error('Error while trying to update item', {
       error,
       userId,
-      taskId
-     })
+      updateItem
+    })
 
     return {
-      statusCode: error.statusCode || 501,
+      statusCode: 500,
       headers: accessControlAllowOrigin,
       body: JSON.stringify({ error })
     }

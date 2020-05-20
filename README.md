@@ -28,3 +28,11 @@ This should start a development server with the React application that will inte
 # Remove serverless App
 
 `serverless remove --stage dev --region us-east-1`
+
+
+# Note
+
+If you receive a node error complaining about memory `JavaScript heap out of memory`, you can use the following command to extend the nodejs memory 
+```
+export NODE_OPTIONS=--max-old-space-size=8192
+```

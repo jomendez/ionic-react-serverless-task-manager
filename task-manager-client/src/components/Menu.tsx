@@ -9,7 +9,7 @@ import {
   IonMenuToggle,
   IonNote
 } from '@ionic/react';
-import { bookmarkOutline, documentOutline, documentSharp, heartOutline, heartSharp, homeOutline, homeSharp, listOutline, listSharp } from 'ionicons/icons';
+import { bookmarkOutline, documentOutline, documentSharp, heartOutline, heartSharp, homeOutline, homeSharp, listOutline, listSharp, personOutline, personSharp } from 'ionicons/icons';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Auth from '../auth/Auth';
@@ -45,6 +45,12 @@ const appPages: AppPage[] = [
     url: '/tasks',
     iosIcon: listOutline,
     mdIcon: listSharp
+  },
+  {
+    title: 'Profile',
+    url: '/profile',
+    iosIcon: personOutline,
+    mdIcon: personSharp
   }
 ];
 

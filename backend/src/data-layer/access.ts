@@ -1,12 +1,12 @@
 import * as AWS from 'aws-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+import { TaskItem } from '../models/TaskItem'
+import { TaskUpdate } from '../models/TaskUpdate'
+import { createLogger } from '../utils/logger'
 
 const AWSXRay = require('aws-xray-sdk')
 
-import { TaskItem } from '../models/TaskItem'
-import { TaskUpdate } from '../models/TaskUpdate'
 
-import { createLogger } from '../utils/logger'
 
 const
   XAWS = AWSXRay.captureAWS(AWS),

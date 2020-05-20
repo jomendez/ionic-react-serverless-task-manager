@@ -1,13 +1,10 @@
+import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 import 'source-map-support/register'
-import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
+import { getAllTasks } from '../../business-logic/tasks-crud'
+import { createLogger } from '../../utils/logger'
+import { getUserId } from '../utils'
 
 const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
-
-import { getUserId } from '../utils'
-import { createLogger } from '../../utils/logger'
-
-import { getAllTasks } from '../../business-logic/tasks-crud'
-
 const getTasksLogger = createLogger('getTask')
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {

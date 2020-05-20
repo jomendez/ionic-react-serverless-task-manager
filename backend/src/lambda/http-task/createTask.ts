@@ -1,9 +1,9 @@
-import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
-import { CreateTaskRequest } from '../../requests/CreateTaskRequest'
-import { getUserId } from '../utils'
-import { createLogger } from '../../utils/logger'
+import 'source-map-support/register'
 import { createTask } from '../../business-logic/tasks-crud'
+import { CreateTaskRequest } from '../../requests/CreateTaskRequest'
+import { createLogger } from '../../utils/logger'
+import { getUserId } from '../utils'
 
 const createTaskLogger = createLogger('createTaskLambda')
 const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }

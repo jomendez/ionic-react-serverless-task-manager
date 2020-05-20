@@ -17,14 +17,16 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import Auth from './auth/Auth';
 import Callback from './components/Callback';
-import { UploadImage } from './components/UploadImage';
 import Home from './components/Home';
 import { LogIn } from './components/LogIn';
 import Menu from './components/Menu';
 import NewTask from './components/NewTask';
+import ProfileComponent from './components/Profile';
 import Tasks from './components/TasksList';
+import { UploadImage } from './components/UploadImage';
 /* Theme variables */
 import './theme/variables.css';
+import { UploadProfileImage } from './components/UploadProfileImage';
 /* Core CSS required for Ionic components to work properly */
 /* Basic CSS for apps built with Ionic */
 /* Optional CSS utils that can be commented out */
@@ -47,12 +49,7 @@ export interface AppProps { }
 export interface AppState { }
 
 export default class App extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props)
-  }
-
   auth = new Auth()
-
 
   render() {
 
@@ -82,6 +79,15 @@ export default class App extends Component<AppProps, AppState> {
 
               <Route
                 exact
+                path="/profile"
+                render={props => {
+                  return <ProfileComponent auth={this.auth} />
+                }
+                }
+              />
+
+              <Route
+                exact
                 path="/new"
                 render={props => {
                   return <NewTask auth={this.auth} />
@@ -104,10 +110,14 @@ export default class App extends Component<AppProps, AppState> {
                   return <UploadImage {...props} auth={this.auth} />
                 }}
               />
-              {/* Task ?
-               <Redirect from='/' to='/welsome' /> 
-              */}
-              {/* <Redirect from='/' to='/tasks' /> */}
+
+              <Route
+                exact
+                path="/profiles/:profileId/edit"
+                render={props => {
+                  return <UploadProfileImage {...props} auth={this.auth} />
+                }}
+              />
               <Route component={Home} />
             </IonRouterOutlet>
 

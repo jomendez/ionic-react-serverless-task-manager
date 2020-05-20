@@ -1,27 +1,28 @@
 import { apiEndpoint } from '../config'
-import { Task } from '../types/Task';
-import { CreateTaskRequest } from '../types/CreateTaskRequest';
+import { Profile } from '../types/Profile';
+import { CreateProfileRequest } from '../types/CreateProfileRequest';
 import Axios from 'axios'
-import { UpdateTaskRequest } from '../types/UpdateTaskRequest';
+import { UpdateProfileRequest } from '../types/UpdateProfileRequest';
 
-export async function getTasks(idToken: string): Promise<Task[]> {
-  console.log('Fetching Tasks')
+export async function getProfiles(idToken: string): Promise<Profile> {
+  console.log('Fetching Profiles')
 
-  const response = await Axios.get(`${apiEndpoint}/tasks`, {
+  const response = await Axios.get(`${apiEndpoint}/profiles`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     },
   })
-  console.log('Tasks:', response.data)
+  console.log('Profiles:', response.data)
+  
   return response.data.items
 }
 
-export async function createTask(
+export async function createProfile(
   idToken: string,
-  newTask: CreateTaskRequest
-): Promise<Task> {
-  const response = await Axios.post(`${apiEndpoint}/tasks`, JSON.stringify(newTask), {
+  newProfile: CreateProfileRequest
+): Promise<Profile> {
+  const response = await Axios.post(`${apiEndpoint}/profiles`, JSON.stringify(newProfile), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -30,12 +31,13 @@ export async function createTask(
   return response.data.item
 }
 
-export async function patchTask(
+export async function patchProfile(
   idToken: string,
-  taskId: string,
-  updatedTask: UpdateTaskRequest
+  profileId: string,
+  updatedProfile: UpdateProfileRequest
 ): Promise<void> {
-  await Axios.patch(`${apiEndpoint}/tasks/${taskId}`, JSON.stringify(updatedTask), {
+  debugger
+  await Axios.patch(`${apiEndpoint}/profiles/${profileId}`, JSON.stringify(updatedProfile), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -43,11 +45,11 @@ export async function patchTask(
   })
 }
 
-export async function deleteTask(
+export async function deleteProfile(
   idToken: string,
-  taskId: string
+  profileId: string
 ): Promise<void> {
-  await Axios.delete(`${apiEndpoint}/tasks/${taskId}`, {
+  await Axios.delete(`${apiEndpoint}/profiles/${profileId}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -57,9 +59,9 @@ export async function deleteTask(
 
 export async function getUploadUrl(
   idToken: string,
-  taskId: string
+  profileId: string
 ): Promise<string> {
-  const response = await Axios.post(`${apiEndpoint}/tasks/${taskId}/attachment`, '', {
+  const response = await Axios.post(`${apiEndpoint}/profiles/${profileId}/attachment`, '', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`

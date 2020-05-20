@@ -1,13 +1,9 @@
 import * as uuid from 'uuid'
-
+import { Access } from '../data-layer/access'
 import { TaskItem } from '../models/TaskItem'
 import { TaskUpdate } from '../models/TaskUpdate'
-
 import { CreateTaskRequest } from '../requests/CreateTaskRequest'
 import { UpdateTaskRequest } from '../requests/UpdateTaskRequest'
-
-import { Access } from '../data-layer/access'
-
 import { createLogger } from '../utils/logger'
 
 const tasksS3FileBucket = process.env.TASKS_FILES_S3_BUCKET;

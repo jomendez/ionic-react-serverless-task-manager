@@ -1,0 +1,356 @@
+
+{
+  "header": {
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20200519.155307.3140.0.001.json",
+    "dumpEventTime": "2020-05-19T15:53:07Z",
+    "dumpEventTimeStamp": "1589917987255",
+    "processId": 3140,
+    "cwd": "C:\\Users\\Pro\\source\\repos\\ionic-react-serverless-task-manager\\backend",
+    "commandLine": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:/Program Files/nodejs/node_modules/serverless/bin/serverless.js",
+      "deploy",
+      "-v"
+    ],
+    "nodejsVersion": "v12.0.0",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "win32",
+    "componentVersions": {
+      "node": "12.0.0",
+      "v8": "7.4.288.21-node.16",
+      "uv": "1.28.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.38.0",
+      "napi": "4",
+      "llhttp": "1.1.1",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1b",
+      "cldr": "34.0",
+      "icu": "63.1",
+      "tz": "2018e",
+      "unicode": "11.0"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl": "https://nodejs.org/download/release/v12.0.0/node-v12.0.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.0.0/node-v12.0.0.tar.gz",
+      "libUrl": "https://nodejs.org/download/release/v12.0.0/win-x64/node.lib"
+    },
+    "osName": "Windows_NT",
+    "osRelease": "10.0.18362",
+    "osVersion": "Windows 10 Pro",
+    "osMachine": "x86_64",
+    "host": "DESKTOP-E5HTBH6"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00007ff621274f99",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+9161"
+    },
+    {
+      "pc": "0x00007ff621278986",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+23990"
+    },
+    {
+      "pc": "0x00007ff621277915",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+19781"
+    },
+    {
+      "pc": "0x00007ff62135f852",
+      "symbol": "uv_loop_fork+47890"
+    },
+    {
+      "pc": "0x00007ff62168c7ae",
+      "symbol": "v8::internal::Parser::ReportMessageAt+206"
+    },
+    {
+      "pc": "0x00007ff62166082a",
+      "symbol": "v8::internal::wasm::StreamingDecoder::Fail+666"
+    },
+    {
+      "pc": "0x00007ff6216f6c9c",
+      "symbol": "v8::internal::Heap::CreateFillerObjectAt+2972"
+    },
+    {
+      "pc": "0x00007ff6216fea0f",
+      "symbol": "v8::internal::LocalEmbedderHeapTracer::NotifyV8MarkingWorklistWasEmpty+5375"
+    },
+    {
+      "pc": "0x00007ff6216f5083",
+      "symbol": "v8::internal::Heap::CollectGarbage+1235"
+    },
+    {
+      "pc": "0x00007ff6216f3784",
+      "symbol": "v8::internal::GCTracer::AddScopeSample+1316"
+    },
+    {
+      "pc": "0x00007ff6217343b3",
+      "symbol": "v8::internal::Factory::NewFillerObject+67"
+    },
+    {
+      "pc": "0x00007ff621a5ad06",
+      "symbol": "v8::internal::OptimizingCompileDispatcher::Unblock+116966"
+    },
+    {
+      "pc": "0x00007ff621ef3916",
+      "symbol": "v8::internal::NativesCollection<0>::GetScriptsSource+660214"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 4315090944,
+    "totalCommittedMemory": 4315090944,
+    "usedMemory": 4195902696,
+    "availableMemory": 62197928,
+    "memoryLimit": 4345298944,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 524288,
+        "committedMemory": 524288,
+        "capacity": 523976,
+        "used": 31712,
+        "available": 492264
+      },
+      "new_space": {
+        "memorySize": 33554432,
+        "committedMemory": 33554432,
+        "capacity": 16767232,
+        "used": 3630360,
+        "available": 13136872
+      },
+      "old_space": {
+        "memorySize": 3922321408,
+        "committedMemory": 3922321408,
+        "capacity": 3837537360,
+        "used": 3835943800,
+        "available": 1593560
+      },
+      "code_space": {
+        "memorySize": 3309568,
+        "committedMemory": 3309568,
+        "capacity": 2599296,
+        "used": 2599296,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 58724352,
+        "committedMemory": 58724352,
+        "capacity": 57910560,
+        "used": 57910560,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 296034304,
+        "committedMemory": 296034304,
+        "capacity": 295236664,
+        "used": 295236664,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 622592,
+        "committedMemory": 622592,
+        "capacity": 550304,
+        "used": 550304,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 16767232,
+        "used": 0,
+        "available": 16767232
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 334.656,
+    "kernelCpuSeconds": 49.796,
+    "cpuConsumptionPercent": 173.177,
+    "maxRss": 4051845120,
+    "pageFaults": {
+      "IORequired": 2133612,
+      "IONotRequired": 0
+    },
+    "fsActivity": {
+      "reads": 44468,
+      "writes": 12
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "ACLOCAL_PATH": "C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\share\\aclocal;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\share\\aclocal",
+    "ALLUSERSPROFILE": "C:\\ProgramData",
+    "ANSICON": "118x1000 (118x29)",
+    "ANSICON_DEF": "7",
+    "APPDATA": "C:\\Users\\Pro\\AppData\\Roaming",
+    "APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL": "true",
+    "AWS_MEDIA_BUCKET": "udagram-mendez-dev",
+    "AWS_PROFILE": "default",
+    "AWS_REGION": "us-east-1",
+    "CMDER_ROOT": "C:/Users/Pro/cmder",
+    "COLORTERM": "truecolor",
+    "COMMONPROGRAMFILES": "C:\\Program Files\\Common Files",
+    "COMPUTERNAME": "DESKTOP-E5HTBH6",
+    "COMSPEC": "C:\\WINDOWS\\system32\\cmd.exe",
+    "CONFIG_SITE": "C:/Users/Pro/cmder/vendor/git-for-windows/mingw64/etc/config.site",
+    "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
+    "ChocolateyLastPathUpdate": "132330301233607567",
+    "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+    "CommonProgramW6432": "C:\\Program Files\\Common Files",
+    "ConEmuANSI": "ON",
+    "ConEmuBackHWND": "0x0005067E",
+    "ConEmuBaseDir": "C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5\\ConEmu",
+    "ConEmuBaseDirShort": "C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5\\ConEmu",
+    "ConEmuBuild": "180626",
+    "ConEmuCfgDir": "C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5",
+    "ConEmuDir": "C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5",
+    "ConEmuDrawHWND": "0x00070692",
+    "ConEmuDrive": "C:",
+    "ConEmuHWND": "0x0097088A",
+    "ConEmuHooks": "Enabled",
+    "ConEmuPID": "13820",
+    "ConEmuPalette": "Monokai",
+    "ConEmuServerPID": "16564",
+    "ConEmuTask": "{bash::bash}",
+    "ConEmuWorkDir": "C:\\Users\\Pro",
+    "ConEmuWorkDrive": "C:",
+    "DISPLAY": "needs-to-be-defined",
+    "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
+    "EXEPATH": "C:\\Program Files\\Git\\bin",
+    "GIT_ASKPASS": "c:\\Users\\Pro\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass.sh",
+    "HOME": "C:\\Users\\Pro",
+    "HOMEDRIVE": "C:",
+    "HOMEPATH": "\\Users\\Pro",
+    "HOSTNAME": "DESKTOP-E5HTBH6",
+    "INFOPATH": "C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\local\\info;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\share\\info;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\info;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\share\\info",
+    "JWT_SECRET": "helloworld",
+    "LANG": "en_US.UTF-8",
+    "LOCALAPPDATA": "C:\\Users\\Pro\\AppData\\Local",
+    "LOGONSERVER": "\\\\DESKTOP-E5HTBH6",
+    "MANPATH": "C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\local\\man;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\share\\man;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\local\\man;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\share\\man;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\man;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\share\\man",
+    "MINGW_CHOST": "x86_64-w64-mingw32",
+    "MINGW_PACKAGE_PREFIX": "mingw-w64-x86_64",
+    "MINGW_PREFIX": "C:/Users/Pro/cmder/vendor/git-for-windows/mingw64",
+    "MSYSTEM": "MINGW64",
+    "MSYSTEM_CARCH": "x86_64",
+    "MSYSTEM_CHOST": "x86_64-w64-mingw32",
+    "MSYSTEM_PREFIX": "C:/Users/Pro/cmder/vendor/git-for-windows/mingw64",
+    "NODE_OPTIONS=--max-old-space-size": "4096",
+    "NUMBER_OF_PROCESSORS": "4",
+    "NVM_HOME": "C:\\Users\\Pro\\AppData\\Roaming\\nvm",
+    "NVM_SYMLINK": "C:\\Program Files\\nodejs",
+    "OLDPWD": "C:/Users/Pro/source/repos/ionic-react-serverless-task-manager",
+    "ORIGINAL_PATH": "C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\bin;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\bin;C:\\Users\\Pro\\bin;C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5\\ConEmu\\Scripts;C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5;C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5\\ConEmu;C:\\Program Files\\Python37\\Scripts;C:\\Program Files\\Python37;C:\\Program Files (x86)\\Intel\\iCLS Client;C:\\Program Files\\Intel\\iCLS Client;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\Intel\\WiFi\\bin;C:\\Program Files\\Common Files\\Intel\\WirelessCommon;C:\\WINDOWS\\System32\\OpenSSH;C:\\Program Files\\Git\\cmd;C:\\Program Files\\dotnet;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn;C:\\Users\\Pro\\AppData\\Roaming\\nvm;C:\\Program Files\\nodejs;C:\\Program Files\\Amazon\\AWSCLIV2;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\ProgramData\\DockerDesktop\\version-bin;C:\\Users\\Pro\\.windows-build-tools\\python27;C:\\Users\\Pro\\.windows-build-tools\\python27;C:\\Users\\Pro\\.windows-build-tools\\python27;C:\\Users\\Pro\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Pro\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\Pro\\AppData\\Roaming\\npm;C:\\Users\\Pro\\AppData\\Roaming\\nvm;C:\\Program Files\\nodejs;C:\\Users\\Pro\\.ebcli-virtual-env\\executables;C:\\Users\\Pro\\UnxUtils\\usr\\local\\wbin",
+    "ORIGINAL_TEMP": "C:/Users/Pro/AppData/Local/Temp",
+    "ORIGINAL_TMP": "C:/Users/Pro/AppData/Local/Temp",
+    "OS": "Windows_NT",
+    "OneDrive": "C:\\Users\\Pro\\OneDrive",
+    "OnlineServices": "Online Services",
+    "PATH": "C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\Pro\\bin;C:\\Program Files\\Git\\mingw64\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\Pro\\bin;C:\\Users\\Pro\\bin;C:\\Users\\Pro\\cmder\\bin;C:\\Users\\Pro\\cmder\\vendor\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\bin;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\local\\bin;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\bin;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\bin;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\bin;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\bin;C:\\Users\\Pro\\bin;C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5\\ConEmu\\Scripts;C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5;C:\\Users\\Pro\\cmder\\vendor\\conemu-maximus5\\ConEmu;C:\\Program Files\\Python37\\Scripts;C:\\Program Files\\Python37;C:\\Program Files (x86)\\Intel\\iCLS Client;C:\\Program Files\\Intel\\iCLS Client;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\Intel\\WiFi\\bin;C:\\Program Files\\Common Files\\Intel\\WirelessCommon;C:\\WINDOWS\\System32\\OpenSSH;C:\\Program Files\\Git\\cmd;C:\\Program Files\\dotnet;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn;C:\\Users\\Pro\\AppData\\Roaming\\nvm;C:\\Program Files\\nodejs;C:\\Program Files\\Amazon\\AWSCLIV2;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\ProgramData\\DockerDesktop\\version-bin;C:\\Users\\Pro\\.windows-build-tools\\python27;C:\\Users\\Pro\\.windows-build-tools\\python27;C:\\Users\\Pro\\.windows-build-tools\\python27;C:\\Users\\Pro\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Pro\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\Pro\\AppData\\Roaming\\npm;C:\\Users\\Pro\\AppData\\Roaming\\nvm;C:\\Program Files\\nodejs;C:\\Users\\Pro\\.ebcli-virtual-env\\executables;C:\\Users\\Pro\\UnxUtils\\usr\\local\\wbin;C:\\Users\\Pro\\cmder;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\bin\\vendor_perl;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\bin\\core_perl;C:\\Users\\Pro\\UnxUtils\\usr\\local\\wbin",
+    "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW",
+    "PKG_CONFIG_PATH": "C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\lib\\pkgconfig;C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\mingw64\\share\\pkgconfig",
+    "PLINK_PROTOCOL": "ssh",
+    "POSTGRESS_DATABASE": "udagrammendezdev",
+    "POSTGRESS_HOST": "udagrammendezdev.ctyfrh4angzk.us-east-1.rds.amazonaws.com",
+    "POSTGRESS_PASSWORD": "udagrammendezdev",
+    "POSTGRESS_USERNAME": "udagrammendezdev",
+    "PROCESSOR_ARCHITECTURE": "AMD64",
+    "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 78 Stepping 3, GenuineIntel",
+    "PROCESSOR_LEVEL": "6",
+    "PROCESSOR_REVISION": "4e03",
+    "PROGRAMFILES": "C:\\Program Files",
+    "PROMPT": "$P$G",
+    "PSModulePath": "C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules",
+    "PTSMINSTALLPATH": "c:\\Program Files\\HP\\HP ProtectTools Security Manager\\Bin\\",
+    "PTSMINSTALLPATH_X86": "C:\\Program Files (x86)\\HP\\HP ProtectTools Security Manager\\Bin\\",
+    "PUBLIC": "C:\\Users\\Public",
+    "PWD": "C:/Users/Pro/source/repos/ionic-react-serverless-task-manager/backend",
+    "ProgramData": "C:\\ProgramData",
+    "ProgramFiles(x86)": "C:\\Program Files (x86)",
+    "ProgramW6432": "C:\\Program Files",
+    "RegionCode": "NA",
+    "SESSIONNAME": "Console",
+    "SHELL": "C:\\Users\\Pro\\cmder\\vendor\\git-for-windows\\usr\\bin\\bash.exe",
+    "SHLVL": "4",
+    "SSH_ASKPASS": "C:/Users/Pro/cmder/vendor/git-for-windows/mingw64/libexec/git-core/git-gui--askpass",
+    "SYSTEMDRIVE": "C:",
+    "SYSTEMROOT": "C:\\WINDOWS",
+    "TEMP": "C:\\Users\\Pro\\AppData\\Local\\Temp",
+    "TERM": "cygwin",
+    "TERM_PROGRAM": "vscode",
+    "TERM_PROGRAM_VERSION": "1.45.1",
+    "TMP": "C:\\Users\\Pro\\AppData\\Local\\Temp",
+    "TMPDIR": "C:\\Users\\Pro\\AppData\\Local\\Temp",
+    "USERDOMAIN": "DESKTOP-E5HTBH6",
+    "USERDOMAIN_ROAMINGPROFILE": "DESKTOP-E5HTBH6",
+    "USERNAME": "Pro",
+    "USERPROFILE": "C:\\Users\\Pro",
+    "VCTargetsPath": "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/Common7/IDE/VC/VCTargets",
+    "VSCODE_GIT_ASKPASS_MAIN": "c:\\Users\\Pro\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass-main.js",
+    "VSCODE_GIT_ASKPASS_NODE": "C:\\Users\\Pro\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "VSCODE_GIT_IPC_HANDLE": "\\\\.\\pipe\\vscode-git-4709472f5b-sock",
+    "WINDIR": "C:\\WINDOWS",
+    "_": "C:/Users/Pro/AppData/Roaming/nvm/v12.0.0/node",
+    "platformcode": "AN"
+  },
+  "sharedObjects": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+    "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+    "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+    "C:\\WINDOWS\\System32\\WS2_32.dll",
+    "C:\\WINDOWS\\System32\\RPCRT4.dll",
+    "C:\\WINDOWS\\System32\\ADVAPI32.dll",
+    "C:\\WINDOWS\\System32\\msvcrt.dll",
+    "C:\\WINDOWS\\System32\\sechost.dll",
+    "C:\\WINDOWS\\System32\\USER32.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dbghelp.dll",
+    "C:\\WINDOWS\\System32\\win32u.dll",
+    "C:\\WINDOWS\\System32\\ucrtbase.dll",
+    "C:\\WINDOWS\\System32\\GDI32.dll",
+    "C:\\WINDOWS\\System32\\gdi32full.dll",
+    "C:\\WINDOWS\\System32\\msvcp_win.dll",
+    "C:\\WINDOWS\\System32\\PSAPI.DLL",
+    "C:\\WINDOWS\\System32\\CRYPT32.dll",
+    "C:\\WINDOWS\\System32\\MSASN1.dll",
+    "C:\\WINDOWS\\SYSTEM32\\USERENV.dll",
+    "C:\\WINDOWS\\System32\\bcrypt.dll",
+    "C:\\WINDOWS\\System32\\profapi.dll",
+    "C:\\WINDOWS\\SYSTEM32\\IPHLPAPI.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\WINMM.dll",
+    "C:\\WINDOWS\\SYSTEM32\\winmmbase.dll",
+    "C:\\WINDOWS\\System32\\cfgmgr32.dll",
+    "C:\\WINDOWS\\System32\\bcryptPrimitives.dll",
+    "C:\\WINDOWS\\System32\\IMM32.DLL",
+    "C:\\WINDOWS\\System32\\powrprof.dll",
+    "C:\\WINDOWS\\System32\\UMPDC.dll",
+    "C:\\WINDOWS\\system32\\uxtheme.dll",
+    "C:\\WINDOWS\\System32\\combase.dll",
+    "C:\\WINDOWS\\system32\\mswsock.dll",
+    "C:\\WINDOWS\\System32\\kernel.appcore.dll",
+    "C:\\WINDOWS\\SYSTEM32\\CRYPTBASE.DLL",
+    "C:\\WINDOWS\\System32\\NSI.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dhcpcsvc6.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\dhcpcsvc.DLL",
+    "C:\\WINDOWS\\SYSTEM32\\DNSAPI.dll",
+    "C:\\WINDOWS\\system32\\napinsp.dll",
+    "C:\\WINDOWS\\system32\\pnrpnsp.dll",
+    "C:\\WINDOWS\\System32\\winrnr.dll",
+    "C:\\WINDOWS\\system32\\NLAapi.dll",
+    "C:\\WINDOWS\\system32\\wshbth.dll",
+    "C:\\Windows\\System32\\rasadhlp.dll",
+    "C:\\WINDOWS\\System32\\fwpuclnt.dll"
+  ]
+}

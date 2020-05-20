@@ -2,7 +2,6 @@ import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } f
 import 'source-map-support/register'
 import { createLogger } from '../../utils/logger'
 
-
 const updateUserLogger = createLogger('updateUser')
 const accessControlAllowOrigin = { 'Access-Control-Allow-Origin': '*' }
 
@@ -23,7 +22,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     }
   }
 
-  
+
 
 
   return {

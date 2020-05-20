@@ -4,7 +4,7 @@ export interface TaskItem {
   createdAt: string
   name: string
   text: string
-  dueDate: string
+  dueDate?: string
   done: boolean
   attachmentUrl?: string
 }
