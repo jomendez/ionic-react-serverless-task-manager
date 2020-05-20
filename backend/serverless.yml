@@ -241,7 +241,15 @@ functions:
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.PROFILES_FILES_S3_BUCKET}/*
 
-
+  # Elastic search
+  SyncWithElasticsearch:
+    environment:
+      ES_ENDPOINT: !GetAtt TaskSearch.DomainEndpoint
+    handler: src/lambda/dynamo/elasticSearchSync.handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt TasksDynamoDBTable.StreamArn  
 
 
 
@@ -320,6 +328,8 @@ resources:
             Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
         TableName: ${self:provider.environment.TASKS_TABLE}
 
     #profile 
@@ -380,3 +390,30 @@ resources:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.PROFILES_TABLE}
+
+    # Elastic search
+    TaskSearch:
+      Type: AWS::Elasticsearch::Domain
+      Properties:
+        ElasticsearchVersion: '6.3'
+        DomainName: images-search-${self:provider.stage}
+        ElasticsearchClusterConfig:
+          DedicatedMasterEnabled: false
+          InstanceCount: '1'
+          ZoneAwarenessEnabled: false
+          InstanceType: t2.small.elasticsearch
+        EBSOptions:
+          EBSEnabled: true
+          Iops: 0
+          VolumeSize: 10
+          VolumeType: 'gp2'
+
+        AccessPolicies:
+          Version: '2012-10-17'
+          Statement:
+            -
+              Effect: Allow
+              Principal:
+                AWS: '*'
+              Action: 'es:*'
+              Resource: '*'
